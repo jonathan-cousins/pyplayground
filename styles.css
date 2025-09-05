@@ -1,0 +1,8 @@
+body { font-family: -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin: 20px; color: #111; }
+header h1 { margin: 0 0 12px 0; }
+main { display: flex; gap: 20px; align-items: flex-start; }
+#editor-area { flex: 1; }
+#output-area { width: 40%; background: #0b0b0b; color: #e6e6e6; padding: 12px; border-radius: 6px; }
+textarea { width: 100%; font-family: monospace; font-size: 14px; }
+button { margin-top: 8px; padding: 6px 10px; }
+pre { white-space: pre-wrap; word-break: break-word; }

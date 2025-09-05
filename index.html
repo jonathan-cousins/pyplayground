@@ -3,33 +3,28 @@
 <head>
     <meta charset="utf-8">
     <title>PyPlayground</title>
+    <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
 </head>
 
 <body>
-    <h1>PyPlayground</h1>
-    <textarea id="code" rows="10" cols="50">print("Hello, Python!")</textarea><br>
-    <button id="run">Run</button>
-    <pre id="output"></pre>
+    <header>
+        <h1>PyPlayground</h1>
+    </header>
 
-    <script>
-        const pyodideReady = loadPyodide(); // start loading immediately
+    <main>
+        <section id="editor-area">
+            <textarea id="code" rows="12" cols="80">print("Hello, Python!")</textarea><br>
+            <button id="run">Run</button>
+            <button id="save">Save</button>
+        </section>
 
-        async function main() {
-            // wait for the pyodide runtime to finish loading
-            const pyodide = await pyodideReady;
-            document.getElementById('run').onclick = async () => {
-                const code = document.getElementById('code').value;
-                try {
-                    const output = await pyodide.runPythonAsync(code);
-                    document.getElementById('output').textContent = String(output ?? '');
-                } catch (err) {
-                    document.getElementById('output').textContent = err;
-                }
-            };
-        }
-        main();
-    </script>
+        <section id="output-area">
+            <h2>Output</h2>
+            <pre id="output"></pre>
+        </section>
+    </main>
 
+    <script src="app.js" type="module"></script>
 </body>
 </html>
