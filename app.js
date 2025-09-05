@@ -1,13 +1,22 @@
+// PyPlayground - Browser-based Python code executor using Pyodide
+// Main application logic for running Python code in the browser
+
 const outputEl = document.getElementById('output');
 const codeEl = document.getElementById('code');
 const runBtn = document.getElementById('run');
 const saveBtn = document.getElementById('save');
 
-// start loading pyodide immediately
+// Start loading Pyodide immediately for better performance
 const pyodideReady = loadPyodide();
 
+/**
+ * Executes Python code safely in Pyodide with captured output
+ * @param {PyodideInterface} pyodide - The loaded Pyodide instance
+ * @param {string} src - Python source code to execute
+ * @returns {Promise<{out: string, err: string}>} - Captured stdout and stderr
+ */
 async function runAndCapture(pyodide, src) {
-  // create a runner in the pyodide namespace that captures stdout/stderr
+  // Create a Python wrapper that captures stdout/stderr safely
   const wrapper = `
 import sys, io, traceback
 _out = io.StringIO()
@@ -23,24 +32,28 @@ finally:
 _output = _out.getvalue()
 _error = _err.getvalue()
 `;
-  // inject the user code safely
+  // Inject the user code safely into the Python environment
   pyodide.globals.set("__USER_CODE__", src);
   await pyodide.runPythonAsync(wrapper);
   const out = pyodide.globals.get("_output") ?? "";
   const err = pyodide.globals.get("_error") ?? "";
-  // clean up
+  // Clean up global variables to prevent memory leaks
   pyodide.globals.del("__USER_CODE__");
   pyodide.globals.del("_output");
   pyodide.globals.del("_error");
   return { out: String(out), err: String(err) };
 }
 
+/**
+ * Main application initialization and event handlers
+ */
 async function main() {
   const pyodide = await pyodideReady;
-  // restore last saved code
+  // Restore previously saved code from localStorage
   const saved = localStorage.getItem('pyplayground:code');
   if (saved) codeEl.value = saved;
 
+  // Handle code execution
   runBtn.addEventListener('click', async () => {
     outputEl.textContent = "Running…";
     try {
@@ -51,11 +64,12 @@ async function main() {
     }
   });
 
+  // Handle code saving to localStorage
   saveBtn.addEventListener('click', () => {
     localStorage.setItem('pyplayground:code', codeEl.value);
     outputEl.textContent = "Saved to localStorage";
   });
 
-  // TODO: load lesson list from /lessons and expose navigation
+  // TODO: Load lesson list from /lessons directory and expose navigation UI
 }
 main();
