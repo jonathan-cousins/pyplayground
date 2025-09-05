@@ -1,30 +1,127 @@
+<!-- Feedback Modals -->
+<div id="modal-overlay" class="modal-overlay" style="display:none;"></div>
+<div id="modal-success" class="modal" style="display:none;">
+    <div class="modal-content">
+        <h2>🎉 Success!</h2>
+        <p id="modal-success-message"></p>
+        <button id="modal-success-close">Continue</button>
+    </div>
+</div>
+<div id="modal-error" class="modal" style="display:none;">
+    <div class="modal-content">
+        <h2>❌ Error</h2>
+        <p id="modal-error-message"></p>
+        <button id="modal-error-close">Close</button>
+    </div>
+</div>
+<div id="modal-hint" class="modal" style="display:none;">
+    <div class="modal-content">
+        <h2>💡 Hint</h2>
+        <p id="modal-hint-message"></p>
+        <button id="modal-hint-close">Got it</button>
+    </div>
+</div>
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <title>PyPlayground</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <!-- Monaco Editor CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs/loader.js"></script>
 </head>
 
 <body>
-    <header>
-        <h1>PyPlayground</h1>
-    </header>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <h1>🐍 PyPlayground</h1>
+        </div>
+        <ul class="menu-bar">
+            <li class="menu-item">
+                Chapters
+                <ul class="dropdown" id="chapter-dropdown"></ul>
+            </li>
+            <li class="menu-item">
+                Lessons
+                <ul class="dropdown" id="lesson-dropdown"></ul>
+            </li>
+            <li class="menu-item" id="training-menu">Training</li>
+        </ul>
+        <!-- Training Modal -->
+        <div id="modal-training" class="modal" style="display:none;">
+            <div class="modal-content">
+                <h2>🏋️ Training Challenge</h2>
+                <div id="training-challenge"></div>
+                <textarea id="training-code" rows="6"
+                    style="width:100%;margin:1rem 0;font-family:monospace;"></textarea>
+                <button id="training-run">Run</button>
+                <pre id="training-output"></pre>
+                <button id="training-close">Close</button>
+            </div>
+        </div>
+        <div class="nav-items">
+            <span id="user-xp">0 XP</span>
+            <span id="user-streak">0 day streak</span>
+            <span id="user-progress-bar">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </span>
+        </div>
+    </nav>
 
-    <main>
-        <section id="editor-area">
-            <textarea id="code" rows="12" cols="80">print("Hello, Python!")</textarea><br>
-            <button id="run">Run</button>
-            <button id="save">Save</button>
-        </section>
+    <div class="app-container side-by-side">
+        <aside class="left-sidebar">
+            <section class="sidebar-section">
+                <h3>Courses</h3>
+                <ul id="course-list" class="sidebar-list"></ul>
+            </section>
+            <section class="sidebar-section">
+                <h3>Lessons</h3>
+                <ul id="lesson-list" class="sidebar-list"></ul>
+            </section>
+            <section class="sidebar-section">
+                <h3>Achievements</h3>
+                <div id="sidebar-achievements"></div>
+            </section>
+        </aside>
+        <main class="main-content">
+            <section class="dashboard">
+                <h2 id="lesson-title">Welcome!</h2>
+                <div id="lesson-story" class="lesson-story"></div>
+                <div id="lesson-explanation" class="lesson-explanation"></div>
+                <div id="lesson-examples" class="lesson-examples"></div>
+                <div id="lesson-assignment" class="lesson-assignment"></div>
+                <div id="lesson-meta">
+                    <span id="lesson-xp"></span>
+                    <span id="lesson-status"></span>
+                </div>
+                <div id="achievement-bar"></div>
+                <div id="nav-controls">
+                    <button id="prev-lesson">Previous</button>
+                    <button id="next-lesson">Next</button>
+                </div>
+            </section>
+        </main>
+        <aside class="right-panel">
+            <section id="editor-area">
+                <label for="monaco-editor" class="editor-label">Code Editor</label>
+                <div id="monaco-editor" style="height:300px;border:1px solid #475569;"></div>
+                <div class="editor-actions">
+                    <button id="run">Run</button>
+                    <button id="hint">Hint</button>
+                </div>
+            </section>
+            <section id="output-area">
+                <h2>Output</h2>
+                <pre id="output"></pre>
+            </section>
+        </aside>
+    </div>
 
-        <section id="output-area">
-            <h2>Output</h2>
-            <pre id="output"></pre>
-        </section>
-    </main>
-
-    <script src="app.js" type="module"></script>
+    <script src="app.js"></script>
 </body>
+
 </html>
